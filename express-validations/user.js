@@ -21,7 +21,7 @@ const password = check('password')
     .matches(/^[A-Za-z0-9]*$/).withMessage('Password should consist only with English letters and digits')
     .custom((value, { req }) => {
 
-        if (value !== req.body.repeatPassword) {
+        if (value !== req.body.rePassword) {
             return Promise.reject('Password confirmation is incorrect');
         } else {
             return true;

@@ -36,7 +36,7 @@ module.exports = {
                 const isLiked = Boolean(users.some(user => user._id.toString() === currentUser));
 
                 res.render('course/details', {
-                    title: "Express Retake Exam January 2019",
+                    pagetitle: "JS Back-End - Exam - November 2020",
                     ...course,
                     isLiked: isLiked,
                     isCreator: isCreator,
@@ -48,13 +48,13 @@ module.exports = {
             }
         },
         create(req, res) {
-            res.render('course/create', { title: "Create page", });
+            res.render('course/create', { pagetitle: "JS Back-End - Exam - November 2020", });
         },
         async update(req, res) {
             const courseId = req.params.id;
             try {
                 const course = await getCourse(courseId);
-                res.render('course/edit', { title: "Express Retake Exam January 2019", ...course, });
+                res.render('course/edit', { pagetitle: "JS Back-End - Exam - November 2020", ...course, });
 
             } catch (error) {
                 console.error('Error :', error);
@@ -99,14 +99,15 @@ module.exports = {
         async create(req, res, next) {
             try {
                 const entry = req.body;
-                const date = new Date(Date.now()).toLocaleDateString();
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', };
+                const date = new Date(Date.now()).toLocaleDateString("en-US", options);
                 const newCourse = new Course({
                     'title': entry.title,
                     'description': entry.description,
                     'imageUrl': entry.imageUrl,
-                    'isPublic': Boolean(entry.isPublic === 'on'),
-                    'creator': req.user._id,
+                    'duration': entry.duration,
                     'created': date,
+                    'users': [],
                 });
 
                 const course = await newCourse.save();
@@ -133,7 +134,7 @@ module.exports = {
                     'title': entry.title,
                     'description': entry.description,
                     'imageUrl': entry.imageUrl,
-                    'isPublic': entry.isPublic || false,
+                    'duration': entry.duration,
                 });
                 if (result) {
 
@@ -145,21 +146,6 @@ module.exports = {
             } catch (error) {
                 console.error('Error: ' + error);
                 return res.render('course/edit', { errorMessage: error, })
-            }
-            next();
-        },
-        async delete(req, res, next) {
-            try {
-                const courseId = req.params.id;
-
-                const result = await Course.deleteOne({ _id: courseId, });
-                console.log(JSON.stringify(result));
-
-                res.redirect("/");
-
-            } catch (error) {
-                console.error('Error: ' + error);
-                res.render('course/delete', { errorMessage: error.message, });
             }
             next();
         },

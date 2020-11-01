@@ -7,10 +7,10 @@ const { jwtSecret, authCookieName, saltRounds, } = config;
 module.exports = {
     get: {
         login(req, res) {
-            res.render('user/login', { title: 'Login Form', });
+            res.render('user/login', { pagetitle: 'JS Back-End - Exam - November 2020', });
         },
         register(req, res) {
-            res.render('user/register', { title: 'Register Form', });
+            res.render('user/register', { pagetitle: 'JS Back-End - Exam - November 2020', });
         },
         logout(req, res) {
             res.clearCookie(authCookieName);
@@ -19,7 +19,7 @@ module.exports = {
     },
     post: {
         async register(req, res, next) {
-            const { username, password, repeatPassword } = req.body;
+            const { username, password, rePassword } = req.body;
             try {
 
                 const salt = await bcrypt.genSalt(saltRounds);

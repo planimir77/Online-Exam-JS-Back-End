@@ -9,10 +9,6 @@ const handleValidationErrors = require('../express-validations/handle-validation
 module.exports = (app) => {
     app.get('/', homeController.get.homePage);
 
-    app.get('/about', (req, res) => {
-        res.render('about', { title: "About page", });
-    });
-
     // ********************* Course *********************
     // Details
     app.get('/course/details/:id', courseController.get.details);
@@ -38,7 +34,6 @@ module.exports = (app) => {
     );
     // Delete
     app.get('/course/delete/:id', checkAuth(true), courseController.get.delete);
-    app.post('/course/delete/:id', checkAuth(true), courseController.post.delete);
 
     /********************* User *********************/
     // Register
@@ -59,6 +54,6 @@ module.exports = (app) => {
 
     /****************** Not found *********************/
     app.get('*', (req, res) => {
-        res.render('404', { title: "Not found", });
+        res.render('404', { pagetitle: "Not found", });
     });
 };
