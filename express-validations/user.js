@@ -17,8 +17,8 @@ const username = check('username')
 
 const password = check('password')
     .notEmpty()
-    .isLength({ min: 8, }).withMessage('Password must be of 8 characters long.')
-    .matches(/^[A-Za-z0-9]*$/).withMessage('Username should consist only with English letters and digits')
+    .isLength({ min: 5, }).withMessage('Password must be of 5 characters long.')
+    .matches(/^[A-Za-z0-9]*$/).withMessage('Password should consist only with English letters and digits')
     .custom((value, { req }) => {
 
         if (value !== req.body.repeatPassword) {

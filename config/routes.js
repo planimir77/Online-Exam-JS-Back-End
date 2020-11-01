@@ -1,11 +1,9 @@
 const homeController = require('../controllers/home');
 const userController = require('../controllers/user');
 const courseController = require('../controllers/course');
-const accessoryController = require('../controllers/accessory');
 const checkAuth = require('../middlewares/check-auth');
 const validateUser = require('../express-validations/user');
 const validateCourse = require('../express-validations/course');
-const validateAccessory = require('../express-validations/accessory');
 const handleValidationErrors = require('../express-validations/handle-validation-errors');
 
 module.exports = (app) => {
@@ -22,7 +20,7 @@ module.exports = (app) => {
     app.get('/course/create', checkAuth(true), courseController.get.create);
     app.post('/course/create',
         checkAuth(true),
-        validateCourse.name,
+        validateCourse.title,
         validateCourse.description,
         validateCourse.imageUrl,
         handleValidationErrors,
@@ -32,7 +30,7 @@ module.exports = (app) => {
     app.get('/course/edit/:id', checkAuth(true), courseController.get.update);
     app.post('/course/edit/:id',
         checkAuth(true),
-        validateCourse.name,
+        validateCourse.title,
         validateCourse.description,
         validateCourse.imageUrl,
         handleValidationErrors,
@@ -41,19 +39,6 @@ module.exports = (app) => {
     // Delete
     app.get('/course/delete/:id', checkAuth(true), courseController.get.delete);
     app.post('/course/delete/:id', checkAuth(true), courseController.post.delete);
-    // Attach Accessory
-    app.get('/course/attach/accessory/:id', checkAuth(true), courseController.get.attachAccessory);
-    app.post('/course/attach/accessory/:id', checkAuth(true), courseController.post.attachAccessory);
-
-    /********************* Accessory *********************/
-    app.get('/accessory/create', checkAuth(true), accessoryController.get.create);
-    app.post('/accessory/create',
-        checkAuth(true),
-        validateAccessory.name,
-        validateAccessory.description,
-        validateAccessory.imageUrl,
-        accessoryController.post.create
-    );
 
     /********************* User *********************/
     // Register

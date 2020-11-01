@@ -4,12 +4,21 @@ module.exports = {
         async homePage(req, res) {
             const query = req.query;
             try {
-                // const courses = await getCourses(query);
-                // res.render('index', { title: "Home page", courses: courses, });
-				res.render('index', { title: "Home page" });
+                
+                if (res.locals.isLogged) {
+                    const courses = await getCourses(query);
+                    return res.render('user/home', { title: "JS Back-End - Exam - November 2020", courses: courses, });
+                }
+
+                const courses = await (await getCourses({ isPublic: true, })).sort((a, b) => {
+                    return b.users.length - a.users.length;
+                }).slice(0,3);
+
+                res.render('guest/home', { title: "JS Back-End - Exam - November 2020", guestcourses: courses, });
+
             } catch (error) {
                 console.error('Error :', error);
-                res.render('index', { title: "Home page", errorMessage: error.message, });
+                res.render('guest/home', { title: "JS Back-End - Exam - November 2020", errorMessage: error.message, });
             }
         },
     },

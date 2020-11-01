@@ -1,29 +1,32 @@
 const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true,
-        minlength: 5,
+        minlength: 4,
     },
     description: {
         type: String,
         required: true,
         minlength: 20,
+        maxlength: 50,
     },
     imageUrl: {
         type: String,
         required: true,
     },
-    difficultyLevel: {
-        type: Number,
+    duration: {
+        type: String,
         required: true,
-        min: 1,
-        max: 6,
     },
-    accessories: [{
+    created: {
+        type: Date,
+        required: true,
+    },
+    users: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Accessory',
+        ref: 'User',
     },],
 });
 
