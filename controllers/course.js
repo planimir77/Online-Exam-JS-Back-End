@@ -16,7 +16,7 @@ const getCourses = async (query) => {
     return courses;
 };
 
-const getUserslikedCourse = async (courseId) => {
+const getUsersEnrolledCourse = async (courseId) => {
 
     return User.find({ courses: { $in: courseId, }, }).lean();
 }
@@ -28,18 +28,16 @@ module.exports = {
             try {
                 const currentUser = req.user._id;
                 const course = await getCourse(courseId);
-                const isCreator = Boolean(course.creator === req.user._id);
 
                 // Find array of users in course with courseId
-                const users = await getUserslikedCourse(courseId);
+                const users = await getUsersEnrolledCourse(courseId);
 
-                const isLiked = Boolean(users.some(user => user._id.toString() === currentUser));
+                const isEnrolled = Boolean(users.some(user => user._id.toString() === currentUser));
 
                 res.render('course/details', {
                     pagetitle: "JS Back-End - Exam - November 2020",
                     ...course,
-                    isLiked: isLiked,
-                    isCreator: isCreator,
+                    isEnrolled: isEnrolled,
                 });
 
             } catch (error) {
@@ -61,7 +59,7 @@ module.exports = {
                 res.render('course/edit', { errorMessage: error.message, });
             }
         },
-        async like(req, res) {
+        async enroll(req, res) {
             try {
                 const courseId = req.params.id;
                 const userId = req.user._id;

@@ -10,11 +10,11 @@ module.exports = {
                     return res.render('user/home', { pagetitle: "JS Back-End - Exam - November 2020", courses: courses, });
                 }
 
-                const courses = await (await getCourses({ isPublic: true, })).sort((a, b) => {
+                const courses = await (await getCourses()).sort((a, b) => {
                     return b.users.length - a.users.length;
                 }).slice(0,3);
 
-                res.render('guest/home', { pagetitle: "JS Back-End - Exam - November 2020", guestcourses: courses, });
+                res.render('guest/home', { pagetitle: "JS Back-End - Exam - November 2020", topcourses: courses, });
 
             } catch (error) {
                 console.error('Error :', error);

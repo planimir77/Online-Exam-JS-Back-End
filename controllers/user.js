@@ -12,6 +12,9 @@ module.exports = {
         register(req, res) {
             res.render('user/register', { pagetitle: 'JS Back-End - Exam - November 2020', });
         },
+        details(req, res) {
+            res.render('user/details/:id', { pagetitle: 'JS Back-End - Exam - November 2020', });
+        },
         logout(req, res) {
             res.clearCookie(authCookieName);
             res.redirect('/');

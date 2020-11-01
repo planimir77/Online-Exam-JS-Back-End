@@ -24,6 +24,10 @@ const courseSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    isPublic: {
+        type: Boolean,
+        default: false,
+    },
     users: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
