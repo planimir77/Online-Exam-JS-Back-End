@@ -1,10 +1,10 @@
 const homeController = require('../controllers/home');
 const userController = require('../controllers/user');
-const cubeController = require('../controllers/cube');
+const courseController = require('../controllers/course');
 const accessoryController = require('../controllers/accessory');
 const checkAuth = require('../middlewares/check-auth');
 const validateUser = require('../express-validations/user');
-const validateCube = require('../express-validations/cube');
+const validateCourse = require('../express-validations/course');
 const validateAccessory = require('../express-validations/accessory');
 const handleValidationErrors = require('../express-validations/handle-validation-errors');
 
@@ -15,35 +15,35 @@ module.exports = (app) => {
         res.render('about', { title: "About page", });
     });
 
-    // ********************* Cube *********************
+    // ********************* Course *********************
     // Details
-    app.get('/cube/details/:id', cubeController.get.details);
+    app.get('/course/details/:id', courseController.get.details);
     // Create
-    app.get('/cube/create', checkAuth(true), cubeController.get.create);
-    app.post('/cube/create',
+    app.get('/course/create', checkAuth(true), courseController.get.create);
+    app.post('/course/create',
         checkAuth(true),
-        validateCube.name,
-        validateCube.description,
-        validateCube.imageUrl,
+        validateCourse.name,
+        validateCourse.description,
+        validateCourse.imageUrl,
         handleValidationErrors,
-        cubeController.post.create
+        courseController.post.create
     );
     // Edit
-    app.get('/cube/edit/:id', checkAuth(true), cubeController.get.update);
-    app.post('/cube/edit/:id',
+    app.get('/course/edit/:id', checkAuth(true), courseController.get.update);
+    app.post('/course/edit/:id',
         checkAuth(true),
-        validateCube.name,
-        validateCube.description,
-        validateCube.imageUrl,
+        validateCourse.name,
+        validateCourse.description,
+        validateCourse.imageUrl,
         handleValidationErrors,
-        cubeController.post.update
+        courseController.post.update
     );
     // Delete
-    app.get('/cube/delete/:id', checkAuth(true), cubeController.get.delete);
-    app.post('/cube/delete/:id', checkAuth(true), cubeController.post.delete);
+    app.get('/course/delete/:id', checkAuth(true), courseController.get.delete);
+    app.post('/course/delete/:id', checkAuth(true), courseController.post.delete);
     // Attach Accessory
-    app.get('/cube/attach/accessory/:id', checkAuth(true), cubeController.get.attachAccessory);
-    app.post('/cube/attach/accessory/:id', checkAuth(true), cubeController.post.attachAccessory);
+    app.get('/course/attach/accessory/:id', checkAuth(true), courseController.get.attachAccessory);
+    app.post('/course/attach/accessory/:id', checkAuth(true), courseController.post.attachAccessory);
 
     /********************* Accessory *********************/
     app.get('/accessory/create', checkAuth(true), accessoryController.get.create);

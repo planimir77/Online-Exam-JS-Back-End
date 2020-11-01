@@ -17,7 +17,7 @@ const accessorySchema = new mongoose.Schema({
         required: true,
         //validate: validator.isURL({ protocols: ['http', 'https',], require_protocol: true, }),
     },
-    cubes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Cube', },],
+    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course', },],
 });
 
 module.exports = mongoose.model('Accessory', accessorySchema, 'accessories');

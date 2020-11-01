@@ -1,11 +1,11 @@
-const { getCubes } = require('./cube')
+const { getCourses } = require('./course')
 module.exports = {
     get: {
         async homePage(req, res) {
             const query = req.query;
             try {
-                // const cubes = await getCubes(query);
-                // res.render('index', { title: "Home page", cubes: cubes, });
+                // const courses = await getCourses(query);
+                // res.render('index', { title: "Home page", courses: courses, });
 				res.render('index', { title: "Home page" });
             } catch (error) {
                 console.error('Error :', error);

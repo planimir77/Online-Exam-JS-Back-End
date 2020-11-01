@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const cubeSchema = new mongoose.Schema({
+const courseSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -27,4 +27,4 @@ const cubeSchema = new mongoose.Schema({
     },],
 });
 
-module.exports = mongoose.model('Cube', cubeSchema, 'cubes');
+module.exports = mongoose.model('Course', courseSchema, 'courses');
