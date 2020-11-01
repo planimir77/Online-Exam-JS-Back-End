@@ -1,7 +1,7 @@
 {
     "name": "name",
     "description": "description",
-    "authors": "author",
+    "authors": "planimir77",
     "version": "1.0.0",
     "main": "index.js",
     "dependencies": {
