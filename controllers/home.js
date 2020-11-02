@@ -10,7 +10,7 @@ module.exports = {
                 if (res.locals.isLogged) {
                     // all public courses sorted by the created time in ascending order
                     const courses = await (await getCourses({ isPublic: true, })).sort((a, b) => {
-                        return a.created - b.created;
+                        return a.createdAt - b.createdAt;
                     });
 
                     return res.render('user/home', { pageTitle: homePageTitle, courses: courses, });

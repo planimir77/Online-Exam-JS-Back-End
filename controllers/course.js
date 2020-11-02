@@ -112,7 +112,7 @@ module.exports = {
                     'imageUrl': entry.imageUrl,
                     'duration': entry.duration,
                     'creator': req.user._id,
-                    'created': date,
+                    'createdAt': date,
                     'users': [],
                 });
 
