@@ -39,4 +39,7 @@ const courseSchema = new mongoose.Schema({
     },],
 });
 
+// Create search index "text" for schema properties in this case "title" and "description"
+courseSchema.index({ title: "text", description: "text", });
+
 module.exports = mongoose.model('Course', courseSchema, 'courses');
