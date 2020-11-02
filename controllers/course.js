@@ -3,7 +3,6 @@ const User = require('../models/User');
 const detailsPageTitle = 'JS Back-End - Exam - November 2020';
 const createPageTitle = 'JS Back-End - Exam - November 2020';
 const updatePageTitle = 'JS Back-End - Exam - November 2020';
-const enrollPageTitle = 'JS Back-End - Exam - November 2020';
 
 const getCourse = async (id) => {
     const course = await Course.findOne({ _id: id, }).lean();
@@ -14,7 +13,16 @@ const getCourse = async (id) => {
 
 const getCourses = async (query) => {
 
-    const courses = await Course.find(query).lean();
+    //const courses = await Course.find(query).lean();
+    const options = {};
+    if (query.hasOwnProperty('search')) {
+        // $text is defined in model schema
+        Object.assign(options, { $text: { $search: query.search, }, });
+        delete query.search;
+    }
+    Object.assign(options, query);
+    const courses = await Course.find(options).lean();
+
     console.log("Courses: ", courses);
 
     return courses;
@@ -105,7 +113,7 @@ module.exports = {
                 const entry = req.body;
 
                 // Store date as UTC
-                const date = new Date(Date.now()).toUTCString();               
+                const date = new Date(Date.now()).toUTCString();
                 const newCourse = new Course({
                     'title': entry.title,
                     'description': entry.description,
