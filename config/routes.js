@@ -56,6 +56,6 @@ module.exports = (app) => {
 
     /****************** Not found *********************/
     app.get('*', (req, res) => {
-        res.render('404', { pagetitle: "Not found", });
+        res.render('404', { pageTitle: "Not found", });
     });
 };

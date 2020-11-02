@@ -1,5 +1,9 @@
 const Course = require('../models/Course');
 const User = require('../models/User');
+const detailsPageTitle = 'JS Back-End - Exam - November 2020';
+const createPageTitle = 'JS Back-End - Exam - November 2020';
+const updatePageTitle = 'JS Back-End - Exam - November 2020';
+const enrollPageTitle = 'JS Back-End - Exam - November 2020';
 
 const getCourse = async (id) => {
     const course = await Course.findOne({ _id: id, }).lean();
@@ -28,6 +32,7 @@ module.exports = {
             try {
                 const currentUser = req.user._id;
                 const course = await getCourse(courseId);
+                const isCreator = Boolean(course.creator === req.user._id);
 
                 // Find array of users in course with courseId
                 const users = await getUsersEnrolledCourse(courseId);
@@ -35,9 +40,10 @@ module.exports = {
                 const isEnrolled = Boolean(users.some(user => user._id.toString() === currentUser));
 
                 res.render('course/details', {
-                    pagetitle: "JS Back-End - Exam - November 2020",
+                    pageTitle: detailsPageTitle,
                     ...course,
                     isEnrolled: isEnrolled,
+                    isCreator: isCreator,
                 });
 
             } catch (error) {
@@ -46,17 +52,17 @@ module.exports = {
             }
         },
         create(req, res) {
-            res.render('course/create', { pagetitle: "JS Back-End - Exam - November 2020", });
+            res.render('course/create', { pageTitle: createPageTitle, });
         },
         async update(req, res) {
             const courseId = req.params.id;
             try {
                 const course = await getCourse(courseId);
-                res.render('course/edit', { pagetitle: "JS Back-End - Exam - November 2020", ...course, });
+                res.render('course/edit', { pageTitle: updatePageTitle, ...course, });
 
             } catch (error) {
                 console.error('Error :', error);
-                res.render('course/edit', { errorMessage: error.message, });
+                res.render('course/edit', { pageTitle: updatePageTitle, errorMessage: error.message, });
             }
         },
         async enroll(req, res) {
@@ -97,13 +103,15 @@ module.exports = {
         async create(req, res, next) {
             try {
                 const entry = req.body;
-                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', };
-                const date = new Date(Date.now()).toLocaleDateString("en-US", options);
+
+                // Store date as UTC
+                const date = new Date(Date.now()).toUTCString();               
                 const newCourse = new Course({
                     'title': entry.title,
                     'description': entry.description,
                     'imageUrl': entry.imageUrl,
                     'duration': entry.duration,
+                    'creator': req.user._id,
                     'created': date,
                     'users': [],
                 });
@@ -113,7 +121,8 @@ module.exports = {
                 //when success
                 if (course) {
                     console.log(JSON.stringify(course));
-                    return res.redirect(`/course/details/${course._id}`);
+                    return res.redirect('/');
+                    //return res.redirect(`/course/details/${course._id}`);
                 }
                 res.render('course/create');
 

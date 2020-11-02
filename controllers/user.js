@@ -4,16 +4,20 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const { jwtSecret, authCookieName, saltRounds, } = config;
 
+const loginPageTitle = 'JS Back-End - Exam - November 2020';
+const registerPageTitle = 'JS Back-End - Exam - November 2020';
+const detailsPageTitle = 'JS Back-End - Exam - November 2020';
+
 module.exports = {
     get: {
         login(req, res) {
-            res.render('user/login', { pagetitle: 'JS Back-End - Exam - November 2020', });
+            res.render('user/login', { pageTitle: loginPageTitle, });
         },
         register(req, res) {
-            res.render('user/register', { pagetitle: 'JS Back-End - Exam - November 2020', });
+            res.render('user/register', { pageTitle: registerPageTitle, });
         },
         details(req, res) {
-            res.render('user/details/:id', { pagetitle: 'JS Back-End - Exam - November 2020', });
+            res.render('user/details/:id', { pageTitle: detailsPageTitle, });
         },
         logout(req, res) {
             res.clearCookie(authCookieName);
@@ -57,8 +61,8 @@ module.exports = {
                         return res.redirect('/');
                     }
                 }
-                //throw new Error('Wrong username or password', { username: username, password: password, });
-                return res.render('user/login', { errorMessage: 'Wrong username or password', username: username, password: password, });
+               
+                res.render('user/login', { errorMessage: 'Wrong username or password', username: username, password: password, });
 
             } catch (error) {
                 console.error("Error: ", error);
