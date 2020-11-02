@@ -1,8 +1,18 @@
 const { check } = require('express-validator');
+const Course = require('../models/Course');
 
 const title = check('title')
     .notEmpty()
-    .isLength({ min: 4, }).withMessage('Title must be of 4 characters long.');
+    .isLength({ min: 4, }).withMessage('Title must be of 4 characters long.')
+    .custom((value, { req }) => {
+        return Promise.resolve(
+            Course.findOne({ title: value, }).then(user => {
+
+                if (user) {
+                    return Promise.reject('Title already in use');
+                }
+            }));
+    });
 
 const description = check('description')
     .notEmpty()

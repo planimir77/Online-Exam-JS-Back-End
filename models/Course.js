@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const courseSchema = new mongoose.Schema({
     title: {
         type: String,
+        unique: true,
         required: true,
         minlength: 4,
     },
@@ -26,7 +27,11 @@ const courseSchema = new mongoose.Schema({
     },
     isPublic: {
         type: Boolean,
-        default: false,
+        default: true,
+    },
+    creator: {
+        type: String,
+        required: true,
     },
     users: [{
         type: mongoose.Schema.Types.ObjectId,
