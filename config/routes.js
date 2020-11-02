@@ -11,10 +11,9 @@ module.exports = (app) => {
 
     // ********************* Course *********************
     // Details
-    app.get('/course/details/:id', courseController.get.details);
+    app.get('/course/details/:id',checkAuth(true), courseController.get.details);
     // Enroll
-    app.get('/course/enroll/:id', courseController.get.enroll);
-
+    app.get('/course/enroll/:id',checkAuth(true), courseController.get.enroll);
     // Create
     app.get('/course/create', checkAuth(true), courseController.get.create);
     app.post('/course/create',
