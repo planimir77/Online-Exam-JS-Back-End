@@ -11,19 +11,18 @@ const getCourse = async (id) => {
     return course;
 };
 
-const getCourses = async (query, sortingQuery, maxResultCount) => {
+const getCourses = async (query, isPublic, sortingQuery, maxResultCount) => {
 
-    //const courses = await Course.find(query).lean();
-    const options = {};
+    // Modify query for text search
     if (query.hasOwnProperty('search')) {
         // $text can be defined in model schema
-        Object.assign(options, { $text: { $search: query.search, }, });
+        Object.assign(query, { $text: { $search: query.search, }, });
         delete query.search;
     }
-    Object.assign(options, query);
 
     const courses = await Course
-        .find(options)
+        .find(query)
+        .where(isPublic)
         .sort(sortingQuery)
         .limit(maxResultCount)
         .lean();
@@ -34,7 +33,7 @@ const getCourses = async (query, sortingQuery, maxResultCount) => {
 };
 
 const getUsersEnrolledCourse = async (courseId) => {
-
+    // Return array of users in course with courseId
     return User.find({ courses: { $in: courseId, }, }).lean();
 }
 

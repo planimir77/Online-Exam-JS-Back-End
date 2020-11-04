@@ -9,13 +9,20 @@ module.exports = {
 
                 if (res.locals.isLogged) {
                     // all public courses sorted by the created time in ascending order
-                    const courses = await (await getCourses({ isPublic: true, ...query, }, { createdAt: 1, },));
+                    const courses = await (await getCourses(
+                        { ...query, },
+                        { isPublic: true,},
+                        { createdAt: 1, },));
 
                     return res.render('user/home', { pageTitle: homePageTitle, courses: courses, });
                 }
 
                 // 3 public courses sorted by the count of enrolled in users in descending order
-                const courses = await (await getCourses({ isPublic: true, }, { users: -1, }, 3));
+                const courses = await (await getCourses(
+                    {...query,},
+                    { isPublic: true, },
+                    { users: -1, }, 
+                    3));
 
                 res.render('guest/home', { pageTitle: homePageTitle, topcourses: courses, });
 
