@@ -21,7 +21,7 @@ const getCourses = async (query, sortingQuery, maxResultCount) => {
         delete query.search;
     }
     Object.assign(options, query);
-    
+
     const courses = await Course
         .find(options)
         .sort(sortingQuery)
@@ -99,16 +99,18 @@ module.exports = {
         },
         async delete(req, res) {
             const courseId = req.params.id;
-            const userId = req.user._id;
             try {
                 // Remove the course
                 const result = await Course.deleteOne({ _id: courseId, });
                 console.log(JSON.stringify(result));
 
-                // Updata user courses
-                await User.updateOne({ _id: userId, }, {
-                    $pull: { courses: courseId, },
-                });
+                // Get and Update users enrolled in course
+                const users = await getUsersEnrolledCourse(courseId);
+                for (const user of users) {
+                    await User.updateOne({ _id: user._id, }, {
+                        $pull: { courses: courseId, },
+                    });
+                }
 
                 res.redirect("/");
 
