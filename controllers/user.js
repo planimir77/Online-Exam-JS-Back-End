@@ -62,13 +62,12 @@ module.exports = {
                     }
                 }
                
-                res.render('user/login', { errorMessage: 'Wrong username or password', username: username, password: password, });
+                return res.render('user/login', { errorMessage: 'Wrong username or password', username: username, password: password, });
 
             } catch (error) {
                 console.error("Error: ", error);
                 return res.render('user/login', { errorMessage: error, });
             }
-            next();
         },
     },
 }
