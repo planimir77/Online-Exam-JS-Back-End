@@ -11,17 +11,22 @@ const getCourse = async (id) => {
     return course;
 };
 
-const getCourses = async (query) => {
+const getCourses = async (query, sortingQuery, maxResultCount) => {
 
     //const courses = await Course.find(query).lean();
     const options = {};
     if (query.hasOwnProperty('search')) {
-        // $text is defined in model schema
+        // $text can be defined in model schema
         Object.assign(options, { $text: { $search: query.search, }, });
         delete query.search;
     }
     Object.assign(options, query);
-    const courses = await Course.find(options).lean();
+    
+    const courses = await Course
+        .find(options)
+        .sort(sortingQuery)
+        .limit(maxResultCount)
+        .lean();
 
     console.log("Courses: ", courses);
 
@@ -94,9 +99,16 @@ module.exports = {
         },
         async delete(req, res) {
             const courseId = req.params.id;
+            const userId = req.user._id;
             try {
+                // Remove the course
                 const result = await Course.deleteOne({ _id: courseId, });
                 console.log(JSON.stringify(result));
+
+                // Updata user courses
+                await User.updateOne({ _id: userId, }, {
+                    $pull: { courses: courseId, },
+                });
 
                 res.redirect("/");
 

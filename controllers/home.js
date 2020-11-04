@@ -6,21 +6,16 @@ module.exports = {
         async homePage(req, res) {
             const query = req.query;
             try {
-                
+
                 if (res.locals.isLogged) {
                     // all public courses sorted by the created time in ascending order
-                    const courses = await (await getCourses({ isPublic: true, ...query,})).sort((a, b) => {
-                        return a.createdAt - b.createdAt;
-                    });
+                    const courses = await (await getCourses({ isPublic: true, ...query, }, { createdAt: 1, },));
 
                     return res.render('user/home', { pageTitle: homePageTitle, courses: courses, });
                 }
 
                 // 3 public courses sorted by the count of enrolled in users in descending order
-                const courses = await (await getCourses({ isPublic: true, })).sort((a, b) => {
-                    return b.users.length - a.users.length;
-                })
-                .slice(0,3);
+                const courses = await (await getCourses({ isPublic: true, }, { users: -1, }, 3));
 
                 res.render('guest/home', { pageTitle: homePageTitle, topcourses: courses, });
 
