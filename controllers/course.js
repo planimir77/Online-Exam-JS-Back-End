@@ -33,7 +33,7 @@ const getCourses = async (query, isPublic, sortingQuery, maxResultCount) => {
 };
 
 const getUsersEnrolledCourse = async (courseId) => {
-    // Return array of users in course with courseId
+    // Return an array of users whose course array has a courseId
     return User.find({ courses: { $in: courseId, }, }).lean();
 }
 
@@ -46,7 +46,7 @@ module.exports = {
                 const course = await getCourse(courseId);
                 const isCreator = Boolean(course.creator === req.user._id);
 
-                // Find array of users in course with courseId
+                // Find the array of users whose course array has a courseId
                 const users = await getUsersEnrolledCourse(courseId);
 
                 const isEnrolled = Boolean(users.some(user => user._id.toString() === currentUser));
